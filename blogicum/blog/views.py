@@ -1,7 +1,6 @@
 from datetime import datetime
-from typing import List, Dict, Optional, Union
+from typing import Dict, Optional, Union
 
-from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
