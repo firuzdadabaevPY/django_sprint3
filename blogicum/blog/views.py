@@ -1,4 +1,5 @@
-from typing import List, Dict, Union
+from datetime import datetime
+from typing import List, Dict, Optional, Union
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
@@ -22,7 +23,12 @@ def add_filters(func):
 
 
 @add_filters
-def get_post_list(category_slug=None, filters=None, current_time=None):
+def get_post_list(
+    category_slug: Union[str, None] = None,
+    filters: Union[Dict[str, str], None] = None,
+    current_time: Optional[datetime] = None
+) -> None:
+    filters = filters or {}
     if category_slug:
         filters['category__slug'] = category_slug
 
@@ -41,7 +47,10 @@ def index(request):
 
 
 @add_filters
-def post_detail(request, post_id, filters=None, current_time=None):
+def post_detail(
+    request, post_id: int, filters: Union[Dict[str, str], None] = None,
+    current_time: Optional[datetime] = None
+) -> render:
     template = 'blog/detail.html'
 
     post = get_object_or_404(Post.objects.select_related(
@@ -52,7 +61,7 @@ def post_detail(request, post_id, filters=None, current_time=None):
     return render(request, template, context)
 
 
-def category_posts(request, category_slug):
+def category_posts(request, category_slug: str):
     template = 'blog/category.html'
 
     category = get_object_or_404(
