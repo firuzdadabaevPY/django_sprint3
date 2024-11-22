@@ -1,4 +1,4 @@
-from typing import List, Dict, Union
+from typing import Union
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
@@ -9,7 +9,7 @@ from .models import Post, Category
 LIMIT_OF_POST = 5
 
 
-def get_post_list(category_title=None):
+def get_post_list(category_title: Union[str, None] = None):
     current_time = timezone.now()
     filters = {
         'pub_date__lte': current_time,
@@ -34,7 +34,7 @@ def index(request):
     return render(request, template, context)
 
 
-def post_detail(request, post_id):
+def post_detail(request, post_id: int):
     template = 'blog/detail.html'
     post = get_object_or_404(get_post_list(), pk=post_id)
 
@@ -42,7 +42,7 @@ def post_detail(request, post_id):
     return render(request, template, context)
 
 
-def category_posts(request, category_slug):
+def category_posts(request, category_slug: str):
     template = 'blog/category.html'
 
     category = get_object_or_404(
