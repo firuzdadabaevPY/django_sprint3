@@ -8,7 +8,7 @@ from .models import Post, Category
 LIMIT_OF_POST = 5
 
 
-def get_post_list(category_title: Union[str, None] = None):
+def get_post_list():
     current_time = timezone.now()
     filters = {
         'pub_date__lte': current_time,
@@ -16,8 +16,8 @@ def get_post_list(category_title: Union[str, None] = None):
         'category__is_published': True
     }
 
-    if category_title:
-        filters['category__title'] = category_title
+    # if category_title:
+    #     filters['category__title'] = category_title
 
     return Post.objects.select_related(
         'location', 'category', 'author'
@@ -50,7 +50,7 @@ def category_posts(request, category_slug: str):
         ).filter(slug=category_slug, is_published=True)
     )
 
-    post_list = get_post_list(category_title=category.title)
+    post_list = get_post_list().filter(category__title=category.title)
 
     context = {
         'post_list': post_list,
