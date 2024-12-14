@@ -14,9 +14,6 @@ def get_post_list():
         'category__is_published': True
     }
 
-    # if category_title:
-    #     filters['category__title'] = category_title
-
     return Post.objects.select_related(
         'location', 'category', 'author'
     ).filter(
@@ -48,7 +45,7 @@ def category_posts(request, category_slug: str):
         ).filter(slug=category_slug, is_published=True)
     )
 
-    post_list = get_post_list().filter(category__title=category.title)
+    post_list = get_post_list().filter(category=category)
 
     context = {
         'post_list': post_list,
